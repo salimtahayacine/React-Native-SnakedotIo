@@ -78,6 +78,10 @@ export default function App() {
 
   // Game over
   const gameOver = () => {
+    if (gameLoopRef.current) {
+      clearInterval(gameLoopRef.current);
+      gameLoopRef.current = null;
+    }
     setIsPlaying(false);
     if (score > highScore) {
       setHighScore(score);
@@ -140,7 +144,7 @@ export default function App() {
         clearInterval(gameLoopRef.current);
       }
     };
-  }, [isPlaying, isPaused, direction, food, gameSpeed]);
+  }, [isPlaying, isPaused, direction, gameSpeed]);
 
   return (
     <SafeAreaView style={styles.container}>

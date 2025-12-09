@@ -24,8 +24,10 @@ export const checkWallCollision = (head) => {
 export const generateFood = (snake) => {
   let food;
   let validPosition = false;
+  let attempts = 0;
+  const maxAttempts = GAME_CONFIG.GRID_SIZE * GAME_CONFIG.GRID_SIZE;
 
-  while (!validPosition) {
+  while (!validPosition && attempts < maxAttempts) {
     food = {
       x: Math.floor(Math.random() * GAME_CONFIG.GRID_SIZE),
       y: Math.floor(Math.random() * GAME_CONFIG.GRID_SIZE),
@@ -33,6 +35,12 @@ export const generateFood = (snake) => {
 
     // Make sure food doesn't spawn on snake
     validPosition = !snake.some(segment => positionEqual(segment, food));
+    attempts++;
+  }
+
+  // Fallback: if we couldn't find a valid position, return a default one
+  if (!validPosition) {
+    food = { x: 0, y: 0 };
   }
 
   return food;
